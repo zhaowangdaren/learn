@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		body{
+			font: normal 80% Helvetica,Arial,sans-serif;
+		}
+		footer{
+			text-align: center;
+		}
+	</style>
+	<script type="text/javascript" src="./js/vue.js" charset="utf-8"></script>
+
+</head>
+<body>
+<button id="retJava" onclick="ret2Java()">Send Key 2 Java</button>
+<!--资产结构-->
+<table id="table_asset_structure">
+	<tr valign="middle">
+		<td>
+			<div id="div_asset_pie" style="width:50%"> </div>
+		</td>
+		<td valign="top">
+			<table id="table_asset_structure_legend"></table>
+		</td>
+	</tr>
+</table>
+
+<form>
+	<p>Start Time: <input type="text"  id="aesstart"></p>
+	<p>End Time:<input type="text" id="aesend"></p>
+</form>
+<div id="asset_trend" style="position: relative; overflow: auto; "></div>
+
+<!--投资标签-->
+<table id="table_invest_lable" cellspacing="10" >
+	<tr>
+	<th>您的投资标签</th>
+	<th align="left"><small>近30日</small></th>
+	</tr>
+	<tr v-for="item in invest_lables">
+		<td v-bind:bgcolor="item.bgcolor" style="color:white">{{ item.name }}</td>
+		<td >{{ item.value }}</td>
+	</tr>
+</table>
+<hr/>
+<!--资金流向-->
+<table cellspacing="10" v-for="item in money_flows" id="table_money_flow">
+	<caption>{{ item.caption }}</caption>
+	<tr>
+		<td>{{item.inItem.name}}</td>
+		<td>{{item.inItem.value}}</td>
+		<td width="50%" align="center">
+			<table cellspacing="0" width="100%" cellpadding="0">
+				<tr >
+					<td width="25%"  align="right">
+						<canvas style="background-color:red" v-bind:width="item.inItem.width" height="15px"></canvas>
+					</td>
+					<td width="25%" align="left">
+						<canvas style="background-color:blue" v-bind:width="item.outItem.width" height="15px"></canvas>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>{{ item.outItem.value }}</td>
+		<td>{{ item.outItem.name }}</td>
+	</tr>
+</table>
+<!--test-->
+<img id="test_width" style="background-color:blue" v-bind:width="size_w" v-bind:height="size_h">
+
+<form>
+plain text:
+<input type="text" id="plaintext" name="plaintext">
+</form>
+<button id="aesEncrypt" onclick="aesEncrypt()">AES Encrypt</button>
+<div id="testaes"></div>
+</body>
+<script type="text/javascript">
+	new Vue({
+		el:'#test_width',
+		data:{
+			size_w:'20px',
+			size_h:'20px'
+		}
+	});
+</script>
+<script type="text/javascript" src="./js/echarts-2.2.7/build/dist/echarts-all.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/assetStructure.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/moneyFlowVue.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/investLableVue.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/assetTrendVue.js" charset="utf-8"></script>
+
+<script type="text/javascript" src="./js/rsa/jsbn.js"></script>
+<script type="text/javascript" src="./js/rsa/prng4.js"></script>
+<script type="text/javascript" src="./js/rsa/rng.js"></script>
+<script type="text/javascript" src="./js/rsa/rsa.js"></script>
+<script type="text/javascript" src="./js/rsa/base64.js"></script>
+
+<script type="text/javascript" src="./js/aes/aes.js"></script>
+<script type="text/javascript" src="./js/aes/md5.js"></script>
+<script type="text/javascript" src="./js/aes/enc-base64.js"></script>
+<script type="text/javascript" src="./js/aes/core.js"></script>
+<script type="text/javascript" src="./js/aes/pad-zeropadding.js"></script>
+<script type="text/javascript">
+
+	var tempKey=getRandomNum(11111111,99999999)+'12345678';
+	function aesEncrypt(){
+		var msg = document.getElementById('plaintext').value;
+		var key = CryptoJS.enc.Utf8.parse(tempKey);
+		var iv  = CryptoJS.enc.Utf8.parse(tempKey);
+		    var encrypted = CryptoJS.AES.encrypt(msg, key, { iv: iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding});
+		    // document.write("encode:"+encrypted);
+		    // window.jsObject.communicate(encrypted.toString());
+		    var result = encrypted.toString();
+		    // alert(result);
+		    window.jsObject.communicate(result);
+	}
+
+	function aesDecrypt(msg){
+		document.getElementById("aesstart").value=Date();
+		var key = CryptoJS.enc.Utf8.parse(tempKey);
+		var iv  = CryptoJS.enc.Utf8.parse(tempKey);
+		// msg=CryptoJS.enc.Utf8.parse(msg);
+		var decrypted = CryptoJS.AES.decrypt(msg,key,{iv:iv,
+			padding:CryptoJS.pad.ZeroPadding
+		});
+		document.getElementById("aesend").value=Date();
+		return decrypted.toString(CryptoJS.enc.Utf8);
+	}
+
+	function showGraph(msg){
+		msg = aesDecrypt(msg);
+
+		showAsset(msg);
+	}
+
+	function jsRet(msg){
+		window.jsObject.jsRetInfo(msg);
+	}
+
+	function ret2Java(){
+		var msg = submit(tempKey);
+		jsRet(msg);
+	}
+
+	function submit(msg){
+		var modulus = "E4210B0CB9C0FB75DBB263B8042161DDE8950D125F56B63BE8DD0859AF5AE2E9E78701CA6C61A95F8AB6460D490E02B6C285130635065336CF18A6D94F6E3F2C7641DBB99128643A6371845462F7C992698E41DBF9776468AE02AA7762D6645BCC16A70CFAF3ADCB630DF08BE27A5887268D19E780AAD73E52119093F3952D43";
+		var e="10001";
+		var rsa = new RSAKey();
+		rsa.setPublic(modulus,e);
+		var res0 = rsa.encrypt(msg);
+		res = linebrk(hex2b64(res0),64);
+		alert(res);
+		return res;
+	}
+
+	function getRandomNum(Min,Max)
+	{
+	var Range = Max - Min;   
+	var Rand = Math.random();   
+	return(Min + Math.round(Rand * Range));   
+	} 
+
+</script>
+</html>

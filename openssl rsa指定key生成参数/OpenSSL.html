@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.openssl.org/docs/manmaster/apps/genpkey.html -->
+<html lang="en" class=" js video"><!-- head.inc --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>OpenSSL</title>
+  <meta charset="utf-8">
+  <meta name="author" content="OpenSSL Foundation, Inc.">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="canonical" href="https://www.openssl.org/">
+  <link href="https://www.openssl.org/favicon.ico" rel="icon">
+  <link href="./OpenSSL_files/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script src="./OpenSSL_files/modernizr-2.0.js"></script><style type="text/css" adt="123"></style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./inc/libs/jquery.min.js"%3E%3C/script%3E'))</script><script src="./OpenSSL_files/jquery.min.js"></script>
+  <script src="./OpenSSL_files/octopress.js" type="text/javascript"></script>
+
+  <link href="./OpenSSL_files/css" rel="stylesheet" type="text/css">
+  <link href="./OpenSSL_files/css(1)" rel="stylesheet" type="text/css">
+
+  <!--[if lt IE 9]>
+    <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+<!-- end -->
+
+<script>if(!document.URL.match(/^http:\/\/v\.baidu\.com|http:\/\/music\.baidu\.com|http:\/\/dnf\.duowan\.com|http:\/\/bbs\.duowan\.com|http:\/\/newgame\.duowan\.com|http:\/\/my\.tv\.sohu\.com/)){
+(function() {
+    Function.prototype.bind = function() {
+        var fn = this, args = Array.prototype.slice.call(arguments), obj = args.shift();
+        return function() {
+            return fn.apply(obj, args.concat(Array.prototype.slice.call(arguments)));
+        };
+    };
+    function A() {}
+    A.prototype = {
+        rules: {
+            /*'youku_loader': {
+                'find': /^http:\/\/static\.youku\.com\/.*(loader|player_.*)(_taobao)?\.swf/,
+                'replace': 'http://swf.adtchrome.com/loader.swf'
+            },
+            'youku_out': {
+                'find': /^http:\/\/player\.youku\.com\/player\.php\/.*sid\/(.*)/,
+                'replace': 'http://swf.adtchrome.com/loader.swf?VideoIDS=$1'
+            },*/
+            'pps_pps': {
+                'find': /^http:\/\/www\.iqiyi\.com\/player\/cupid\/common\/pps_flvplay_s\.swf/,
+                'replace': 'http://swf.adtchrome.com/pps_20140420.swf'
+            },
+            /*'iqiyi_1': {
+                'find': /^http:\/\/www\.iqiyi\.com\/player\/cupid\/common\/.+\.swf$/,
+                'replace': 'http://swf.adtchrome.com/iqiyi_20140624.swf'
+            },
+            'iqiyi_2': {
+                'find': /^http:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/.+\.swf$/,
+                'replace': 'http://swf.adtchrome.com/iqiyi_20140624.swf'
+            },*/
+            'ku6': {
+                'find': /^http:\/\/player\.ku6cdn\.com\/default\/.*\/\d+\/(v|player|loader)\.swf/,
+                'replace': 'http://swf.adtchrome.com/ku6_20140420.swf'
+            },
+            'ku6_topic': {
+                'find': /^http:\/\/player\.ku6\.com\/inside\/(.*)\/v\.swf/,
+                'replace': 'http://swf.adtchrome.com/ku6_20140420.swf?vid=$1'
+            },
+            'sohu': {
+                'find': /^http:\/\/tv\.sohu\.com\/upload\/swf(\/p2p)?\/\d+\/Main\.swf/,
+                'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf'
+            },
+            'sohu2':{
+                'find':/^http:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/testplayer\/Main0?\.swf/,
+                'replace':'http://www.adtchrome.com/sohu/sohu_20150104.swf'
+            },
+            'sohu_share': {
+                'find': /^http:\/\/share\.vrs\.sohu\.com\/my\/v\.swf&/,
+                'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf?'
+            },
+            'sohu_sogou' : {
+                'find': /^http:\/\/share\.vrs\.sohu\.com\/(\d+)\/v\.swf/,
+                'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf?vid=$1'
+            },
+            /*'letv': {
+                'find': /^http:\/\/player\.letvcdn\.com\/.*p\/.*\/newplayer\/LetvPlayer\.swf/,
+                'replace': 'http://swf.adtchrome.com/20150110_letv.swf'
+            },
+            'letv_topic': {
+                'find': /^http:\/\/player\.hz\.letv\.com\/hzplayer\.swf\/v_list=zhuanti/,
+                'replace': 'http://swf.adtchrome.com/20150110_letv.swf'
+            },
+            'letv_duowan': {
+                'find': /^http:\/\/assets\.dwstatic\.com\/video\/vpp\.swf/,
+                'replace': 'http://yuntv.letv.com/bcloud.swf'
+            },*/
+            '17173_in':{
+                'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFile(Customer)?\.swf/,
+                'replace':"http://swf.adtchrome.com/17173_in_20150522.swf"
+            },
+            '17173_out':{
+                'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFileFirstpage\.swf/,
+                'replace':"http://swf.adtchrome.com/17173_out_20150522.swf"
+            },
+            '17173_live':{
+                'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream(_firstpage)?\.swf/,
+                'replace':"http://swf.adtchrome.com/17173_stream_20150522.swf"
+            },
+            '17173_live_out':{
+                'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream_(custom)?Out\.swf/,
+                'replace':"http://swf.adtchrome.com/17173.out.Live.swf"
+            }
+        },
+        _done: null,
+        get done() {
+            if(!this._done) {
+                this._done = new Array();
+            }
+            return this._done;
+        },
+        addAnimations: function() {
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = 'object,embed{\
+                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;\
+                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;\
+                -o-animation-duration:.001s;-o-animation-name:playerInserted;\
+                animation-duration:.001s;animation-name:playerInserted;}\
+                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}';
+            document.getElementsByTagName('head')[0].appendChild(style);
+        },
+        animationsHandler: function(e) {
+            if(e.animationName === 'playerInserted') {
+                this.replace(e.target);
+            }
+        },
+        replace: function(elem) {
+            if(this.done.indexOf(elem) != -1) return;
+            this.done.push(elem);
+            var player = elem.data || elem.src;
+            if(!player) return;
+            var i, find, replace = false;
+            for(i in this.rules) {
+                find = this.rules[i]['find'];
+                if(find.test(player)) {
+                    replace = this.rules[i]['replace'];
+                    if('function' === typeof this.rules[i]['preHandle']) {
+                        this.rules[i]['preHandle'].bind(this, elem, find, replace, player)();
+                    }else{
+                        this.reallyReplace.bind(this, elem, find, replace)();
+                    }
+                    break;
+                }
+            }
+        },
+        reallyReplace: function(elem, find, replace) {
+            elem.data && (elem.data = elem.data.replace(find, replace)) || elem.src && ((elem.src = elem.src.replace(find, replace)) && (elem.style.display = 'block'));
+            var b = elem.querySelector("param[name='movie']");
+            this.reloadPlugin(elem);
+        },
+        reloadPlugin: function(elem) {
+            var nextSibling = elem.nextSibling;
+            var parentNode = elem.parentNode;
+            parentNode.removeChild(elem);
+            var newElem = elem.cloneNode(true);
+            this.done.push(newElem);
+            if(nextSibling) {
+                parentNode.insertBefore(newElem, nextSibling);
+            } else {
+                parentNode.appendChild(newElem);
+            }
+        },
+        init: function() {
+            var desc = navigator.mimeTypes['application/x-shockwave-flash'].description.toLowerCase();
+            /*if(desc.indexOf('adobe')>-1){
+                delete this.rules["iqiyi_1"];
+                delete this.rules["iqiyi_2"];
+            }*/
+            if(document.URL.indexOf('tv.sohu.com')<=0){
+                delete this.rules["sohu"];
+            }
+            var handler = this.animationsHandler.bind(this);
+            document.body.addEventListener('webkitAnimationStart', handler, false);
+            document.body.addEventListener('msAnimationStart', handler, false);
+            document.body.addEventListener('oAnimationStart', handler, false);
+            document.body.addEventListener('animationstart', handler, false);
+            this.addAnimations();
+        }
+    };
+    new A().init();
+})();
+}
+// 20140730
+(function cnbeta() {
+    if (document.URL.indexOf('cnbeta.com') >= 0) {
+        var elms = document.body.querySelectorAll("p>embed");
+        Array.prototype.forEach.call(elms, function(elm) {
+            elm.style.marginLeft = "0px";
+        });
+    }
+})();
+// 20150108
+setTimeout(function(){
+    if (document.URL.indexOf('www.baidu.com') >= 0) {
+        var a = function(){
+            Array.prototype.forEach.call(document.body.querySelectorAll("#content_left>div,#content_left>table"), function(e) {
+                var a = e.getAttribute("style");
+                if(a && /display:(table|block)\s!important/.test(a)){
+                    e.removeAttribute("style")
+                }
+            });
+        };
+        a();
+        document.getElementById("su").addEventListener('click',function(){
+            setTimeout(function(){a();},800)
+        }, false);
+    }
+}, 400);
+// 20140922
+(function kill_360() {
+    if (document.URL.indexOf('so.com') >= 0) {
+        document.getElementById("e_idea_pp").style.display = none;
+    }
+})();
+</script></head><body>
+  <!-- banner.inc -->
+<header role="banner">
+  <hgroup>
+    <h1>
+      <a href="https://www.openssl.org/">
+        <span id="header-open-text">Open</span><span id="header-ssl-text">SSL</span>
+      </a>
+    </h1>
+    <h2>
+      Cryptography and SSL/TLS Toolkit
+    </h2>
+  </hgroup>
+</header>
+
+<nav role="navigation">
+  <form action="https://www.google.com/search" method="get">
+    <fieldset role="search">
+      <input type="hidden" name="sitesearch" value="www.openssl.org">
+      <input class="search" type="text" name="q" results="0" placeholder="Search">
+    </fieldset>
+  </form>
+
+  <ul class="main-navigation">
+    <li><a href="https://www.openssl.org/" title="Home page">Home</a></li>
+    <li><a href="https://www.openssl.org/source/" title="Source code">Downloads</a></li>
+    <li><a href="https://www.openssl.org/docs/" title="FAQ, FIPS, manpages, ...">Docs</a></li>
+    <li><a href="https://www.openssl.org/news/" title="Latest information">News</a></li>
+    <li><a href="https://www.openssl.org/policies/" title="How we operate">Policies</a></li>
+    <li><a href="https://www.openssl.org/community/" title="Blog, bugs, email, ...">Community</a></li>
+    <li><a href="https://www.openssl.org/support/" title="Commercial support and contracting">Support</a></li>
+  </ul>
+  </nav>
+<!-- end -->
+
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+        <article>
+          <header><h2>genpkey</h2></header>
+          <div class="entry-content">
+            <p>
+
+
+
+</p><h3 id="NAME">NAME</h3>
+
+<p>genpkey - generate a private key</p>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><b>openssl</b> <b>genpkey</b> [<b>-out filename</b>] [<b>-outform PEM|DER</b>] [<b>-pass arg</b>] [<b>-cipher</b>] [<b>-engine id</b>] [<b>-paramfile file</b>] [<b>-algorithm alg</b>] [<b>-pkeyopt opt:value</b>] [<b>-genparam</b>] [<b>-text</b>]</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <b>genpkey</b> command generates a private key.</p>
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+
+<dt><b>-out filename</b></dt>
+<dd>
+
+<p>the output filename. If this argument is not specified then standard output is used.</p>
+
+</dd>
+<dt><b>-outform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the output format DER or PEM.</p>
+
+</dd>
+<dt><b>-pass arg</b></dt>
+<dd>
+
+<p>the output file password source. For more information about the format of <b>arg</b> see the <b>PASS PHRASE ARGUMENTS</b> section in <a href="https://www.openssl.org/docs/manmaster/apps/openssl.html">openssl</a>.</p>
+
+</dd>
+<dt><b>-cipher</b></dt>
+<dd>
+
+<p>This option encrypts the private key with the supplied cipher. Any algorithm name accepted by EVP_get_cipherbyname() is acceptable such as <b>des3</b>.</p>
+
+</dd>
+<dt><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>genpkey</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms. If used this option should precede all other options.</p>
+
+</dd>
+<dt><b>-algorithm alg</b></dt>
+<dd>
+
+<p>public key algorithm to use such as RSA, DSA or DH. If used this option must precede any <b>-pkeyopt</b> options. The options <b>-paramfile</b> and <b>-algorithm</b> are mutually exclusive.</p>
+
+</dd>
+<dt><b>-pkeyopt opt:value</b></dt>
+<dd>
+
+<p>set the public key algorithm option <b>opt</b> to <b>value</b>. The precise set of options supported depends on the public key algorithm used and its implementation. See <b>KEY GENERATION OPTIONS</b> below for more details.</p>
+
+</dd>
+<dt><b>-genparam</b></dt>
+<dd>
+
+<p>generate a set of parameters instead of a private key. If used this option must precede and <b>-algorithm</b>, <b>-paramfile</b> or <b>-pkeyopt</b> options.</p>
+
+</dd>
+<dt><b>-paramfile filename</b></dt>
+<dd>
+
+<p>Some public key algorithms generate a private key based on a set of parameters. They can be supplied using this option. If this option is used the public key algorithm used is determined by the parameters. If used this option must precede and <b>-pkeyopt</b> options. The options <b>-paramfile</b> and <b>-algorithm</b> are mutually exclusive.</p>
+
+</dd>
+<dt><b>-text</b></dt>
+<dd>
+
+<p>Print an (unencrypted) text representation of private and public keys and parameters along with the PEM or DER structure.</p>
+
+</dd>
+</dl>
+
+<h3 id="KEY-GENERATION-OPTIONS">KEY GENERATION OPTIONS</h3>
+
+<p>The options supported by each algorithm and indeed each implementation of an algorithm can vary. The options for the OpenSSL implementations are detailed below.</p>
+
+<h3 id="RSA-KEY-GENERATION-OPTIONS">RSA KEY GENERATION OPTIONS</h3>
+
+<dl>
+
+<dt><b>rsa_keygen_bits:numbits</b></dt>
+<dd>
+
+<p>The number of bits in the generated key. If not specified 1024 is used.</p>
+
+</dd>
+<dt><b>rsa_keygen_pubexp:value</b></dt>
+<dd>
+
+<p>The RSA public exponent value. This can be a large decimal or hexadecimal value if preceded by <b>0x</b>. Default value is 65537.</p>
+
+</dd>
+</dl>
+
+<h3 id="DSA-PARAMETER-GENERATION-OPTIONS">DSA PARAMETER GENERATION OPTIONS</h3>
+
+<dl>
+
+<dt><b>dsa_paramgen_bits:numbits</b></dt>
+<dd>
+
+<p>The number of bits in the generated parameters. If not specified 1024 is used.</p>
+
+</dd>
+</dl>
+
+<h3 id="DH-PARAMETER-GENERATION-OPTIONS">DH PARAMETER GENERATION OPTIONS</h3>
+
+<dl>
+
+<dt><b>dh_paramgen_prime_len:numbits</b></dt>
+<dd>
+
+<p>The number of bits in the prime parameter <b>p</b>.</p>
+
+</dd>
+<dt><b>dh_paramgen_generator:value</b></dt>
+<dd>
+
+<p>The value to use for the generator <b>g</b>.</p>
+
+</dd>
+<dt><b>dh_rfc5114:num</b></dt>
+<dd>
+
+<p>If this option is set then the appropriate RFC5114 parameters are used instead of generating new parameters. The value <b>num</b> can take the values 1, 2 or 3 corresponding to RFC5114 DH parameters consisting of 1024 bit group with 160 bit subgroup, 2048 bit group with 224 bit subgroup and 2048 bit group with 256 bit subgroup as mentioned in RFC5114 sections 2.1, 2.2 and 2.3 respectively.</p>
+
+</dd>
+</dl>
+
+<h3 id="EC-PARAMETER-GENERATION-OPTIONS">EC PARAMETER GENERATION OPTIONS</h3>
+
+<p>The EC parameter generation options below can also be supplied as EC key generation options. This can (for example) generate a key from a named curve without the need to use an explicit parameter file.</p>
+
+<dl>
+
+<dt><b>ec_paramgen_curve:curve</b></dt>
+<dd>
+
+<p>the EC curve to use. OpenSSL supports NIST curve names such as "P-256".</p>
+
+</dd>
+<dt><b>ec_param_enc:encoding</b></dt>
+<dd>
+
+<p>the encoding to use for parameters. The "encoding" parameter must be either "named_curve" or "explicit".</p>
+
+</dd>
+</dl>
+
+<h3 id="GOST2001-KEY-GENERATION-AND-PARAMETER-OPTIONS">GOST2001 KEY GENERATION AND PARAMETER OPTIONS</h3>
+
+<p>Gost 2001 support is not enabled by default. To enable this algorithm, one should load the ccgost engine in the OpenSSL configuration file. See README.gost file in the engines/ccgost directory of the source distribution for more details.</p>
+
+<p>Use of a parameter file for the GOST R 34.10 algorithm is optional. Parameters can be specified during key generation directly as well as during generation of parameter file.</p>
+
+<dl>
+
+<dt><b>paramset:name</b></dt>
+<dd>
+
+<p>Specifies GOST R 34.10-2001 parameter set according to RFC 4357. Parameter set can be specified using abbreviated name, object short name or numeric OID. Following parameter sets are supported:</p>
+
+<pre><code>  paramset   OID               Usage
+  A          1.2.643.2.2.35.1  Signature
+  B          1.2.643.2.2.35.2  Signature
+  C          1.2.643.2.2.35.3  Signature
+  XA         1.2.643.2.2.36.0  Key exchange
+  XB         1.2.643.2.2.36.1  Key exchange
+  test       1.2.643.2.2.35.0  Test purposes</code></pre>
+
+</dd>
+</dl>
+
+<h3 id="NOTES">NOTES</h3>
+
+<p>The use of the genpkey program is encouraged over the algorithm specific utilities because additional algorithm options and ENGINE provided algorithms can be used.</p>
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<p>Generate an RSA private key using default parameters:</p>
+
+<pre><code> openssl genpkey -algorithm RSA -out key.pem</code></pre>
+
+<p>Encrypt output private key using 128 bit AES and the passphrase "hello":</p>
+
+<pre><code> openssl genpkey -algorithm RSA -out key.pem -aes-128-cbc -pass pass:hello</code></pre>
+
+<p>Generate a 2048 bit RSA key using 3 as the public exponent:</p>
+
+<pre><code> openssl genpkey -algorithm RSA -out key.pem -pkeyopt rsa_keygen_bits:2048 \
+                                                -pkeyopt rsa_keygen_pubexp:3</code></pre>
+
+<p>Generate 1024 bit DSA parameters:</p>
+
+<pre><code> openssl genpkey -genparam -algorithm DSA -out dsap.pem \
+                                                -pkeyopt dsa_paramgen_bits:1024</code></pre>
+
+<p>Generate DSA key from parameters:</p>
+
+<pre><code> openssl genpkey -paramfile dsap.pem -out dsakey.pem</code></pre>
+
+<p>Generate 1024 bit DH parameters:</p>
+
+<pre><code> openssl genpkey -genparam -algorithm DH -out dhp.pem \
+                                        -pkeyopt dh_paramgen_prime_len:1024</code></pre>
+
+<p>Output RFC5114 2048 bit DH parameters with 224 bit subgroup:</p>
+
+<pre><code> openssl genpkey -genparam -algorithm DH -out dhp.pem -pkeyopt dh_rfc5114:2</code></pre>
+
+<p>Generate DH key from parameters:</p>
+
+<pre><code> openssl genpkey -paramfile dhp.pem -out dhkey.pem</code></pre>
+
+<p>Generate EC parameters:</p>
+
+<pre><code> openssl genpkey -genparam -algorithm EC -out ecp.pem \
+        -pkeyopt ec_paramgen_curve:secp384r1 \
+        -pkeyopt ec_param_enc:named_curve</code></pre>
+
+<p>Generate EC key from parameters:</p>
+
+<pre><code> openssl genpkey -paramfile ecp.pem -out eckey.pem</code></pre>
+
+<p>Generate EC key directly:</p>
+
+<pre><code> openssl genpkey -algorithm EC -out eckey.pem \
+        -pkeyopt ec_paramgen_curve:P-384 \
+        -pkeyopt ec_param_enc:named_curve</code></pre>
+
+<h3 id="HISTORY">HISTORY</h3>
+
+<p>The ability to use NIST curve names, and to generate an EC key directly, were added in OpenSSL 1.0.2.</p>
+
+            <p></p>
+          </div>
+          <footer>
+            You are here: <a href="https://www.openssl.org/">Home</a>
+            : <a href="https://www.openssl.org/docs">Docs</a>
+            : <a href="https://www.openssl.org/docs/manpages.html">Manpages</a>
+            : <a href="https://www.openssl.org/docs/manmaster">master</a>
+            : <a href="https://www.openssl.org/docs/manmaster/apps">apps</a>
+            : <a href="./OpenSSL_files/OpenSSL.html">genpkey</a>
+            <br><a href="https://www.openssl.org/sitemap.txt">Sitemap</a>
+          </footer>
+        </article>
+      </div>
+      <aside class="sidebar">
+  <section>
+    <h1><a href="https://www.openssl.org/docs/manpages.html">master manpages</a></h1>
+    <ul>
+      <li><a href="https://www.openssl.org/docs/manmaster/apps/openssl.html">The openssl command</a></li>
+      <li><a href="https://www.openssl.org/docs/manmaster/ssl/ssl.html">The ssl library</a></li>
+      <li><a href="https://www.openssl.org/docs/manmaster/crypto/crypto.html">The crypto library</a></li>
+<li><a href="https://www.openssl.org/docs/man1.0.2/apps/genpkey.html">1.0.2 version</a></li>
+<li><a href="https://www.openssl.org/docs/man1.0.1/apps/genpkey.html">1.0.1 version</a></li>
+<li><a href="https://www.openssl.org/docs/man1.0.0/apps/genpkey.html">1.0.0 version</a></li>
+<li><a href="https://www.openssl.org/docs/man0.9.8/apps/genpkey.html">0.9.8 version</a></li>
+    </ul>
+  </section>
+</aside>
+
+    </div>
+  </div>
+  <!-- footer.inc -->
+<footer role="contentinfo">
+  <p>
+    Please report problems with this website to webmaster at openssl.org.
+  </p>
+  <p>
+    Copyright © 2015, OpenSSL Software Foundation.
+  </p>
+</footer>
+<!-- end -->
+
+
+
+
+
+</body></html>

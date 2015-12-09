@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="/js/jsbn.js"></script>
+	<script type="text/javascript" src="/js/prng4.js"></script>
+	<script type="text/javascript" src="/js/rng.js"></script>
+	<script type="text/javascript" src="/js/rsa.js"></script>
+	<script type="text/javascript" src="/js/base64.js"></script>
+</head>
+<body>
+<button id="submit" onclick="submit()">submit</button>
+<div id="clip"></div>
+<br/>
+<p>Result:</p>
+<div id="result"></div>
+</body>
+
+<script type="text/javascript">
+	// http://www-cs-students.stanford.edu/~tjw/jsbn/
+	function submit(){
+		var modulus = "E4210B0CB9C0FB75DBB263B8042161DDE8950D125F56B63BE8DD0859AF5AE2E9E78701CA6C61A95F8AB6460D490E02B6C285130635065336CF18A6D94F6E3F2C7641DBB99128643A6371845462F7C992698E41DBF9776468AE02AA7762D6645BCC16A70CFAF3ADCB630DF08BE27A5887268D19E780AAD73E52119093F3952D43";
+		var e="10001";
+		var rsa = new RSAKey();
+		rsa.setPublic(modulus,e);
+		var res0 = rsa.encrypt("1234");
+		res = linebrk(hex2b64(res0),64);
+		document.getElementById('clip').innerHTML=res;
+		submit2(res);
+	}
+
+	function submit2(msg){
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open("GET","/test4?msg="+msg,true);
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				document.getElementById('result').innerHTML=
+					xmlhttp.responseText;
+			}
+		};
+		xmlhttp.send();
+	}
+</script>
+</html>

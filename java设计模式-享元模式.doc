@@ -1,0 +1,117 @@
+﻿Java享元模式
+	享元模式是设计模式中少数几个以提高系统性能为目的的模式之一。核心思想：吐过系统中存在多个相同的对象，那么只需共享一份对象的拷贝，而不必为每次使用都创建新的对象。
+	在享元模式中，由于需要构造和维护这些可以共享的对象，因此，常常会出现一个工厂类，用于维护和创建对象。
+	享元模式对性能提升主要帮助有两点：
+	1、可以节省重复创建对象的开销，因为被享元模式维护的相同对象只会被创建一次，当创建对象比较耗时时，便可以节省大量时间。
+	2、由于创建对象的数量减少，所以对系统内存的需求也减小，这将使得GC的压力降低，进而使得系统拥有一个更健康的内存结构和更快的反应速度。
+	享元模式主要作用就是复用大对象（重量级对象），以节省内存空间和对象创建时间。
+
+享元模式的创建：
+
+
+
+
+
+
+
+
+
+
+
+
+
+图1
+IFlyweight定义了需共享的对象的业务接口：
+/**
+ * 定义需要共享的对象的业务接口
+ * @author ustc-zy
+ *
+ */
+public interface IFlyweight {
+
+	public String createReport();
+}
+
+ConcreteFlyweightA:
+/**
+ * Concrete Flyweight具体的享元类，实现抽象享元类的接口，完成某一具体逻辑
+ * @author ustc-zy
+ *
+ */
+public class ConcreteFlyweightA implements IFlyweight {
+
+	@Override
+	public String createReport() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
+
+ConcreteFlyweightB:
+/**
+ * Concrete Flyweight具体的享元类，实现抽象享元类的接口，完成某一具体逻辑
+ * @author ustc-zy
+ *
+ */
+public class ConcreteFlyweightB implements IFlyweight {
+
+	@Override
+	public String createReport() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
+
+FlyweightManagerFactory:
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Flyweight Manager Factory用以创建具体的享元类，维护相同的享元对象。
+ * 它保证相同的享元对象可以被系统共享，即，其内部使用了类似单例模式的算法，
+ * 当请求对象已经存在时，直接返回对象，不存在时，在创建对象。
+ * @author ustc-zy
+ *
+ */
+public class FlyweightManagerFactory {
+
+	Map<String, IFlyweight> concreteFlyweightA = new HashMap<String, IFlyweight>();
+	Map<String, IFlyweight> concreteFlyweightB = new HashMap<String, IFlyweight>();
+	
+	IFlyweight getConcreteFlyweightA(String id){
+		IFlyweight r = concreteFlyweightA.get(id);
+		if(r == null){
+			r= new ConcreteFlyweightA();
+			concreteFlyweightA.put(id, r);
+		}
+		return r;
+	}
+	
+	IFlyweight getConcreteFlyweightB(String id){
+		IFlyweight r = concreteFlyweightA.get(id);
+		if(r == null){
+			r= new ConcreteFlyweightB();
+			concreteFlyweightA.put(id, r);
+		}
+		return r;
+	}
+}
+
+Main使用方法：
+
+public class Main {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		FlyweightManagerFactory fmf = new FlyweightManagerFactory();
+		IFlyweight fly = fmf.getConcreteFlyweightA("A");
+		System.out.println(fly.createReport());
+	}
+
+}
+

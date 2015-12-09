@@ -1,0 +1,84 @@
+﻿HttpURLConnection是abstract，继承自URLConnection
+
+HTTP Status-Code：
+1xx: Informational
+2xx: Success
+3xx: Redirection
+4xx: Client Error
+5xx: Server Error
+默认是自动重定向：private static boolean followRedirects = true;
+http methods有：
+private static final String[] methods ={“GET”,”POST”,”HEAD”,”OPTIONS”,”PUT”,”DELETE”,”TRACE”}
+
+其构造函数为protected型，外部无法调用：
+protected HttpURLConnection(URL u){
+	super(u);
+}
+
+设置是否允许重定向时，setFollowRedirects(boolean set)会先检查系统的安全策略，如果不允许，则会抛出异常。
+Public static void setFollowRedirects(boolean set){
+	SecurityManager sec = System.getSecurityManager();
+	if(sec != null){
+		//如果系统不允许程序修改重定向，则会抛出异常
+		sec.checkSetFactory();
+	}
+	followRedirects = set;
+}
+还有一个属性默认是依赖followRedirects的：
+protected boolean instanceFollowRedirects = followRedirects;
+
+在设置请求方法时，似乎只能传入大写的方法名，默认方法为GET：
+    public void setRequestMethod(String method) throws ProtocolException {
+        if (connected) {
+            throw new ProtocolException("Can't reset method: already connected");
+        }
+        // This restriction will prevent people from using this class to
+        // experiment w/ new HTTP methods using java.  But it should
+        // be placed for security - the request String could be
+        // arbitrarily long.
+
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i].equals(method)) {
+                this.method = method;
+                return;
+            }
+        }
+        throw new ProtocolException("Invalid HTTP method: " + method);
+    }
+
+
+
+从HTTP回复的message中获取status code：public int getResponseCode throws IOException(){...}
+首先说明http协议结构：
+HTTP请求报文一般格式：
+
+
+
+
+
+
+
+
+
+
+
+以请求百度为例，协议的实际内容为：
+
+HTTP回复报文一般格式：
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+同样访问百度：
+
